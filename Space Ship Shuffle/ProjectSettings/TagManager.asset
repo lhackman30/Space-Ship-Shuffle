@@ -6,6 +6,13 @@ TagManager:
   tags:
   - CP1
   - CP2
+  - bullet
+  - block
+  - PowerUpSpawnPoint
+  - speedBoost
+  - shieldBoost
+  - scoreBoost
+  - lifeBoost
   layers:
   - Default
   - TransparentFX

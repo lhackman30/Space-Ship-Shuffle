@@ -8,11 +8,30 @@ public class BlockBehavior : MonoBehaviour
     private enum BlockType
     {
         Breakable,
-        Unbreakables
+        Unbreakable
     };
+    [SerializeField]
+    private BlockType blocktype;
+    [SerializeField]
+    private GameObject bm;
+    private BlockManager BM;
+
+    private void Start()
+    {
+        BM = bm.GetComponent<BlockManager>();
+    }
     private void OnTriggerEnter(Collider other)
     {
-        //if(other.CompareTag("Player"))
-            
+        Debug.Log("Triggered : " + other.tag + " : " + blocktype);
+        if (other.CompareTag("Player"))
+        {
+            other.GetComponent<Stats>().ChangeHealth(-10);
+        }
+        if (other.CompareTag("bullet") && blocktype == BlockType.Breakable)
+        {
+            //Debug.Log("Breakable!");
+            //BM.removeBlock( this.gameObject );
+            Destroy(this.gameObject);
+        }
     }
 }

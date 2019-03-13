@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Movement : MonoBehaviour
 {
@@ -14,6 +15,13 @@ public class Movement : MonoBehaviour
     private string axis;
     private float shipVelocity = 10.0f;
     private float shipAcceleration = 1;
+    private float maxSpeed = 50.0f;
+    [SerializeField]
+    private Text Score;
+    [SerializeField]
+    private Text Speed;
+    private int score;
+    private int scoreIncreaseRate = 2;
 
 
 
@@ -21,6 +29,9 @@ public class Movement : MonoBehaviour
     void Update()
     {
         this.transform.Translate(shipVelocity * shipAcceleration * Time.deltaTime, 0, 0);
+        score += Mathf.RoundToInt(shipVelocity * scoreIncreaseRate * Time.deltaTime);
+        Score.text = score.ToString();
+        Speed.text = (shipVelocity * 10.0f).ToString();
     }
     public void Move( int dir, string ax )
     {
@@ -43,6 +54,18 @@ public class Movement : MonoBehaviour
     {
         return maxHeight;
     }
+    public void ChangeSpeed( float speedBoost)
+    {
+        shipVelocity += speedBoost;
+        if(shipVelocity <= 0)
+        {
+            shipVelocity = 5;
+        }
+        if(shipVelocity >= maxSpeed)
+        {
+            shipVelocity = maxSpeed;
+        }
+    }
     IEnumerator MoveShip()
     {
         isMoving = true;
@@ -53,12 +76,13 @@ public class Movement : MonoBehaviour
             if( axis == "Horizontal")
             {
                 transform.Translate(0, 0, nextStep);
+                
             }
             else if ( axis == "Vertical")
             {
                 transform.Translate(0, nextStep, 0);
             }
-            yield return new WaitForSecondsRealtime(0.000001f);
+            yield return new WaitForSecondsRealtime(0.001f);
         }
         isMoving = false;
     }
