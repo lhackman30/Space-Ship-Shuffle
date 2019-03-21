@@ -13,6 +13,7 @@ TagManager:
   - shieldBoost
   - scoreBoost
   - lifeBoost
+  - Blockage
   layers:
   - Default
   - TransparentFX

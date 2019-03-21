@@ -115,6 +115,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blocktype: 1
   bm: {fileID: 8739335143558181952, guid: 0d18e490c679ec448b30f51dd4d1e9ef, type: 3}
+  Block: {fileID: 0}
+  death: {fileID: 0}
 --- !u!65 &5275537729462707212
 BoxCollider:
   m_ObjectHideFlags: 0

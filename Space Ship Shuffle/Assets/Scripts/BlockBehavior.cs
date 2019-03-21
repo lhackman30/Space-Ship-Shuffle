@@ -14,6 +14,10 @@ public class BlockBehavior : MonoBehaviour
     private BlockType blocktype;
     [SerializeField]
     private GameObject bm;
+    [SerializeField]
+    private AudioSource Block;
+    [SerializeField]
+    private AudioClip death;
     private BlockManager BM;
 
     private void Start()
@@ -29,9 +33,13 @@ public class BlockBehavior : MonoBehaviour
         }
         if (other.CompareTag("bullet") && blocktype == BlockType.Breakable)
         {
-            //Debug.Log("Breakable!");
-            //BM.removeBlock( this.gameObject );
-            Destroy(this.gameObject);
+            Block.PlayOneShot(death);
+            StartCoroutine("timer");
         }
+    }
+    IEnumerator timer()
+    {
+        yield return new WaitForSeconds(0.1f);
+        Destroy(this.gameObject);
     }
 }

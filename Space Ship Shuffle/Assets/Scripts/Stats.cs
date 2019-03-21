@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Stats : MonoBehaviour
 {
@@ -15,6 +16,12 @@ public class Stats : MonoBehaviour
     private Text Health;
     [SerializeField]
     private Text Lives;
+    [SerializeField]
+    private AudioSource source;
+    [SerializeField]
+    private AudioClip impact;
+    [SerializeField]
+    private Movement movement;
     private void Start()
     {
         meshRenderer = this.gameObject.GetComponent<MeshRenderer>();
@@ -38,6 +45,11 @@ public class Stats : MonoBehaviour
     public void ChangeLives( int delta)
     {
         lives += delta;
+        if(delta < 0)
+        {
+            this.transform.position = movement.getStartingPostition();
+            StartCoroutine("Immune");
+        }
         if(lives <= 0)
         {
             EndGame();
@@ -46,12 +58,13 @@ public class Stats : MonoBehaviour
     }
     private void EndGame()
     {
-
+        SceneManager.LoadScene("EndScreen");
     }
     IEnumerator Immune()
     {
-        Debug.Log("Immune_Start");
+        //Debug.Log("Immune_Start");
         immune = true;
+        source.PlayOneShot(impact);
         for( int i = 0; i < 24; i++)
         {
             if(rendering)

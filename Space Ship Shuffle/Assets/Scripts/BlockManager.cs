@@ -23,7 +23,7 @@ public class BlockManager : MonoBehaviour
         blockList.Add(blockIn);
     }
 
-    private void ActivateAll()
+    public void ActivateAll()
     {
         //CleanList();
         foreach( GameObject go in blockList)

@@ -11,11 +11,22 @@ public class Powerup_Movement : MonoBehaviour
     private bool movingUp = false;
     private float maxBounce = 1;
     private float deltaTime = 0.5f;
+    [SerializeField]
+    private AudioSource source;
+    [SerializeField]
+    private AudioClip speedBoostSFX;
+    [SerializeField]
+    private AudioClip shieldBoostSFX;
+    [SerializeField]
+    private AudioClip lifeBoostSFX;
+
+
     private void Start()
     {
         originalPos = this.transform.position;
     }
-    // Update is called once per frame
+    
+    //Simple animations for the powerup prefabs. Make them bounce up and down while rotating slowly
     void Update()
     {
         if (movingUp)
@@ -41,19 +52,27 @@ public class Powerup_Movement : MonoBehaviour
         switch (tag)
         {
             case "speedBoost":
+                source.PlayOneShot(speedBoostSFX, 0.5f);
                 other.GetComponent<Movement>().ChangeSpeed(5);
-                Destroy(this.gameObject);
+                StartCoroutine("timer");
                 break;
             case "shieldBoost":
+                source.PlayOneShot(shieldBoostSFX, 0.5f);
                 other.GetComponent<Stats>().ChangeHealth(20);
-                Destroy(this.gameObject);
+                StartCoroutine("timer");
                 break;
             case "lifeBoost":
+                source.PlayOneShot(lifeBoostSFX, 0.5f);
                 other.GetComponent<Stats>().ChangeLives(1);
-                Destroy(this.gameObject);
+                StartCoroutine("timer");
                 break;
             case "scoreBoost":
                 break;
         }
+    }
+    IEnumerator timer()
+    {
+        yield return new WaitForSeconds(1.5f);
+        Destroy(this.gameObject);
     }
 }

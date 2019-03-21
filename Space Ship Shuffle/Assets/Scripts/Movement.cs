@@ -22,12 +22,31 @@ public class Movement : MonoBehaviour
     private Text Speed;
     private int score;
     private int scoreIncreaseRate = 2;
+    private bool isCameraMoving = false;
+    private Vector3 startingPosition;
+    [SerializeField]
+    private Stats stats;
+    [SerializeField]
+    private BlockManager blockManager;
 
+    private void Start()
+    {
+        startingPosition = this.transform.position;
+    }
 
 
     // Update is called once per frame
     void Update()
     {
+        if (isCameraMoving) return;
+        RaycastHit hit;
+        if(Physics.Raycast(this.transform.position, Vector3.right, out hit, 3)){
+            if(hit.collider.CompareTag("Blockage"))
+            {
+                stats.ChangeLives(-1);
+                blockManager.ActivateAll();
+            }
+        }
         this.transform.Translate(shipVelocity * shipAcceleration * Time.deltaTime, 0, 0);
         score += Mathf.RoundToInt(shipVelocity * scoreIncreaseRate * Time.deltaTime);
         Score.text = score.ToString();
@@ -66,6 +85,10 @@ public class Movement : MonoBehaviour
             shipVelocity = maxSpeed;
         }
     }
+    public void setIsCameraMoving(bool isCameraMoving)
+    {
+        this.isCameraMoving = isCameraMoving;
+    }
     IEnumerator MoveShip()
     {
         isMoving = true;
@@ -76,14 +99,18 @@ public class Movement : MonoBehaviour
             if( axis == "Horizontal")
             {
                 transform.Translate(0, 0, nextStep);
-                
             }
             else if ( axis == "Vertical")
             {
                 transform.Translate(0, nextStep, 0);
+
             }
             yield return new WaitForSecondsRealtime(0.001f);
         }
         isMoving = false;
+    }
+    public Vector3 getStartingPostition()
+    {
+        return startingPosition;
     }
 }
